@@ -3,7 +3,8 @@
     "type": "project",
     "require": {
         "php": "~8.5",
-        "symfony/console": "^8.0"
+        "symfony/console": "^8.0",
+        "symfony/serializer": "^8.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^12.5",
@@ -14,6 +15,11 @@
     "autoload": {
         "psr-4": {
             "Nanaweb\\MynaIryohiToCsv\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nanaweb\\MynaIryohiToCsv\\Tests\\": "tests/"
         }
     },
     "authors": [
