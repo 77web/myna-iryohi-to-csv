@@ -1,0 +1,22 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Nanaweb\MynaIryohiToCsv\DependencyInjection;
+
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+
+class MyContainerBuilder
+{
+    public function build(): ContainerInterface
+    {
+        $container = new ContainerBuilder();
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yaml');
+
+        return $container;
+    }
+}

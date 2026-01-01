@@ -1,0 +1,13 @@
+#!/usr/bin/env php
+<?php
+
+use Nanaweb\MynaIryohiToCsv\Command\ConvertCsvCommand;
+use Nanaweb\MynaIryohiToCsv\DependencyInjection\MyContainerBuilder;
+use Symfony\Component\Console\Application;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$container = new MyContainerBuilder()->build();
+$app = new Application();
+$app->addCommands([$container->get(ConvertCsvCommand::class)]);
+$app->run();

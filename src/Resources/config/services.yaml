@@ -1,0 +1,29 @@
+services:
+  Nanaweb\MynaIryohiToCsv\UseCase\FileWriter:
+    class: Nanaweb\MynaIryohiToCsv\UseCase\FileWriter
+
+  object_normalizer:
+    class: Symfony\Component\Serializer\Normalizer\ObjectNormalizer
+
+  csv_encoder:
+    class: Symfony\Component\Serializer\Encoder\CsvEncoder
+
+  Symfony\Component\Serializer\SerializerInterface:
+    class: Symfony\Component\Serializer\Serializer
+    arguments:
+      - ['@object_normalizer']
+      - ['@csv_encoder']
+
+  Nanaweb\MynaIryohiToCsv\UseCase\ConvertMynaCsvUseCase:
+    class: Nanaweb\MynaIryohiToCsv\UseCase\ConvertMynaCsvUseCase
+    public: true
+    arguments:
+      - '@Symfony\Component\Serializer\SerializerInterface'
+      - '@Nanaweb\MynaIryohiToCsv\UseCase\FileWriter'
+
+  Nanaweb\MynaIryohiToCsv\Command\ConvertCsvCommand:
+    public: true
+    class: Nanaweb\MynaIryohiToCsv\Command\ConvertCsvCommand
+    arguments:
+      - '@Nanaweb\MynaIryohiToCsv\UseCase\ConvertMynaCsvUseCase'
+    tags: ['console.command']
