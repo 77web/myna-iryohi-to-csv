@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Nanaweb\MynaIryohiToCsv\UseCase;
 
 use Nanaweb\MynaIryohiToCsv\Data\MedicalExpense;
+use Nanaweb\MynaIryohiToCsv\Data\MedicalExpenseType;
 
 class MedicalExpenseBuilder
 {
     private string $yearMonth = '';
+    private ?MedicalExpenseType $type = null;
     private string $medicalInstitutionName = '';
     private int $benefits = 0;
     private int $expense = 0;
@@ -16,6 +18,12 @@ class MedicalExpenseBuilder
     public function withYearMonth(string $yearMonth): self
     {
         $this->yearMonth = $yearMonth;
+        return $this;
+    }
+
+    public function withType(MedicalExpenseType $type): self
+    {
+        $this->type = $type;
         return $this;
     }
 
@@ -39,12 +47,13 @@ class MedicalExpenseBuilder
 
     public function build(): MedicalExpense
     {
-        return new MedicalExpense($this->yearMonth, $this->medicalInstitutionName, $this->benefits, $this->expense);
+        return new MedicalExpense($this->yearMonth, $this->type, $this->medicalInstitutionName, $this->benefits, $this->expense);
     }
 
     public function clear(): self
     {
         $this->yearMonth = '';
+        $this->type = null;
         $this->medicalInstitutionName = '';
         $this->benefits = 0;
         $this->expense = 0;
@@ -54,6 +63,6 @@ class MedicalExpenseBuilder
 
     public function isValid(): bool
     {
-        return $this->yearMonth !== '' && $this->medicalInstitutionName !== '' && $this->expense !== 0;
+        return $this->yearMonth !== '' && $this->type !== null && $this->medicalInstitutionName !== '' && $this->expense !== 0;
     }
 }

@@ -6,6 +6,7 @@ namespace Nanaweb\MynaIryohiToCsv\Tests\UseCase;
 
 use PHPUnit\Framework\TestCase;
 use Nanaweb\MynaIryohiToCsv\UseCase\MedicalExpenseBuilder;
+use Nanaweb\MynaIryohiToCsv\Data\MedicalExpenseType;
 
 class MedicalExpenseBuilderTest extends TestCase
 {
@@ -13,6 +14,7 @@ class MedicalExpenseBuilderTest extends TestCase
     {
         $builder = new MedicalExpenseBuilder()
             ->withYearMonth('2025-12')
+            ->withType(MedicalExpenseType::MEDICAL_CARE)
             ->withMedicalInstitutionName('テスト病院')
             ->withBenefits(1000)
             ->withExpense(2000);
@@ -23,6 +25,7 @@ class MedicalExpenseBuilderTest extends TestCase
     {
         $builder = new MedicalExpenseBuilder()
             ->withYearMonth('')
+            ->withType(MedicalExpenseType::MEDICAL_CARE)
             ->withMedicalInstitutionName('テスト病院')
             ->withBenefits(1000)
             ->withExpense(2000);
@@ -33,6 +36,7 @@ class MedicalExpenseBuilderTest extends TestCase
     {
         $builder = new MedicalExpenseBuilder()
             ->withYearMonth('2025-12')
+            ->withType(MedicalExpenseType::MEDICAL_CARE)
             ->withMedicalInstitutionName('')
             ->withBenefits(1000)
             ->withExpense(2000);
@@ -43,6 +47,7 @@ class MedicalExpenseBuilderTest extends TestCase
     {
         $builder = new MedicalExpenseBuilder()
             ->withYearMonth('2025-12')
+            ->withType(MedicalExpenseType::MEDICAL_CARE)
             ->withMedicalInstitutionName('テスト病院')
             ->withBenefits(1000)
             ->withExpense(0);
@@ -55,13 +60,16 @@ class MedicalExpenseBuilderTest extends TestCase
         $medicalInstitutionName = 'テスト病院';
         $benefits = 1000;
         $expense = 2000;
+        $type = MedicalExpenseType::MEDICAL_CARE;
         $builder = new MedicalExpenseBuilder()
             ->withYearMonth($yearMonth)
+            ->withType($type)
             ->withMedicalInstitutionName($medicalInstitutionName)
             ->withBenefits($benefits)
             ->withExpense($expense);
         $medicalExpense = $builder->build();
         $this->assertSame($yearMonth, $medicalExpense->yearMonth);
+        $this->assertSame($type, $medicalExpense->type);
         $this->assertSame($medicalInstitutionName, $medicalExpense->medicalInstitutionName);
         $this->assertSame($benefits, $medicalExpense->benefits);
         $this->assertSame($expense, $medicalExpense->expense);

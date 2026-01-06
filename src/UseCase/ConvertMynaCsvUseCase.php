@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Nanaweb\MynaIryohiToCsv\UseCase;
 
-
+use Nanaweb\MynaIryohiToCsv\Data\MedicalExpenseType;
 use Symfony\Component\Serializer\SerializerInterface;
 
 readonly class ConvertMynaCsvUseCase
@@ -32,7 +32,9 @@ readonly class ConvertMynaCsvUseCase
                 case '診療年月':
                     $builder->withYearMonth($row[1]);
                     break;
-                //case '診療区分':
+                case '診療区分':
+                    $builder->withType(MedicalExpenseType::fromMynaValue($row[1]));
+                    break;
                 case '医療機関等名称':
                     $builder->withMedicalInstitutionName($row[1]);
                     break;
