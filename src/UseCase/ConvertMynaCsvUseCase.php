@@ -22,6 +22,7 @@ readonly class ConvertMynaCsvUseCase
 
         $builder = new MedicalExpenseBuilder();
         $expenses = [];
+        $atLeastOneInstitution = false;
         while (!$file->eof()) {
             $row = $file->fgetcsv();
             if (count($row) !== 2) {
@@ -37,12 +38,17 @@ readonly class ConvertMynaCsvUseCase
                     break;
                 case '医療機関等名称':
                     $builder->withMedicalInstitutionName($row[1]);
+                    $atLeastOneInstitution = true;
                     break;
                 case 'その他の公費の負担額（円）':
-                    $builder->withBenefits(intval($row[1]));
+                    if ($atLeastOneInstitution) {
+                        $builder->withBenefits($this->toMoney($row[1]));
+                    }
                     break;
                 case '窓口相当負担額（円）':
-                    $builder->withExpense(intval($row[1]));
+                    if ($atLeastOneInstitution) {
+                        $builder->withExpense($this->toMoney($row[1]));
+                    }
                     break;
             }
 
@@ -53,5 +59,14 @@ readonly class ConvertMynaCsvUseCase
         }
 
         $this->fileWriter->write($outputPath, $this->serializer->serialize($expenses, 'csv'));
+    }
+
+    /**
+     * @param $row
+     * @return int
+     */
+    public function toMoney($row): int
+    {
+        return intval(str_replace(',', '', $row));
     }
 }
